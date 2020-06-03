@@ -17,10 +17,17 @@ class Symbol:
 
     def __init__(self, name: str):
         self._name = name
+        self.value = None
         self.components = []
 
     def __str__(self):
-        return self._name
+        return self._name  #+ ('' if self.value is None else f' ({self.value})')
+
+    def __copy__(self):
+        cpy = Symbol(self._name)
+        cpy.value = self.value
+        cpy.components = [x for x in self.components]
+        return cpy
 
     def __repr__(self):
         return self.__str__()
@@ -37,6 +44,7 @@ class Symbol:
 class Grammar:
 
     TERMINAL_LABEL = '@'
+    RULE_END = Symbol('EOF')
 
     def __init__(self, source_file, start_symbol="S"):
         with open(source_file, 'r') as grammar_fp:
@@ -69,9 +77,10 @@ class Grammar:
         :param pattern:
         :return:
         """
-        for k, v in self._rules:
-            if v == pattern:
-                return k
+        for from_s, rules in self._rules.items():
+            for rule in rules:
+                if rule == pattern:
+                    return from_s.__copy__()
 
         return None
 

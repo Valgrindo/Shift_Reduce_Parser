@@ -23,17 +23,18 @@ def main():
         exit(1)
 
     grammar_source = DEFAULT_GRAMMAR if len(argv) == 2 else argv[2]
+    grammar = None
     try:
         grammar = Grammar(grammar_source)  # TODO Maybe make a more sophisticated representation of the grammar?
-
-        # Perform the parse of the sentence structure according to the grammar,
-        parser = SRParser(grammar=grammar)
-        pt = parser.parse(argv[1])
-
-        print(pt)
-
     except Exception as e:
         print(e)  # TODO Upgrade error handling.
+
+    # Perform the parse of the sentence structure according to the grammar,
+    parser = SRParser(grammar=grammar)
+    pt = parser.parse(argv[1])
+
+    print(f'{argv[1]}:')
+    pt.pretty_print()
 
 
 if __name__ == '__main__':
