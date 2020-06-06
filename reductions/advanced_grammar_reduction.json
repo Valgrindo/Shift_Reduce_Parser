@@ -1,0 +1,14 @@
+{
+  "N": ["CD", "EX", "FW", "LS", "NN", "NNS", "POS"],
+  "DET": ["DT", "RP", "WDT"],
+  "P": ["IN", "CC", "PDT", "WP", "WP$"],
+  "PRP": ["PRP"],
+  "PRP$": ["PRP$"],
+  "ADJ": ["JJ", "JJR", "JJS"],
+  "V": ["VB", "VBG", "VBN", "VBP", "VBZ", "VBD"],
+  "ADV": ["RBR", "RBS"],
+  "RB": ["RB"],
+  "NAME": ["NNP", "NNPS"],
+  "TO": ["TO"],
+  "MD": ["MD"]
+}
