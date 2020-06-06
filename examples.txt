@@ -1,0 +1,91 @@
+"""
+This file is a collection of some non-trivial sentences that fall within the scope of the gramamar,
+as well as interesting cases that do not work.
+"""
+
+A parser with no bugs works to parse this sentence:
+S
+|       NP
+|       |       DET (A)
+|       |       N (parser)
+|       |       PP
+|       |       |       P (with)
+|       |       |       NP
+|       |       |       |       DET (no)
+|       |       |       |       N (bugs)
+|       VP
+|       |       V (works)
+|       |       INF
+|       |       |       TO (to)
+|       |       |       VP
+|       |       |       |       V (parse)
+|       |       |       |       NP
+|       |       |       |       |       DET (this)
+|       |       |       |       |       N (sentence)
+
+
+You should always eat your veggies!
+At a certain point in the parse, the following happens:
+Shift always ==> ADV
+ (ROOT -> *S )
+|        (S -> NP *VP )
+|       |        (VP -> MD *ADVP VP )
+|       |       |        (ADVP -> ADV  *)   # 1
+|       |       |        (ADVP -> ADV *VP ) # 2
+                         | <rules>
+
+A reduction is available on #1. However, the natural language heuristic is to prefer a shift to a reduction, and
+'eat' allows a shift to the VP portion of #2. The parse continues and eventually runs into the following situation:
+    Parse stack:
+        [NP, MD, ADVP]
+
+No reduction can be made, and the parse fails.
+
+
+We were not allowed to dive in the pool.:
+S
+|       NP
+|       |       PRP (We)
+|       VP
+|       |       VBD (were)
+|       |       RB (not)
+|       |       VP
+|       |       |       V (allowed)
+|       |       |       INF
+|       |       |       |       TO (to)
+|       |       |       |       VP
+|       |       |       |       |       V (dive)
+|       |       |       |       |       PP
+|       |       |       |       |       |       P (in)
+|       |       |       |       |       |       NP
+|       |       |       |       |       |       |       DET (the)
+|       |       |       |       |       |       |       N (pool)
+
+
+Jack walked to raise the money:
+S
+|       NP
+|       |       NAME (Jack)
+|       VP
+|       |       V (walked)
+|       |       INF
+|       |       |       TO (to)
+|       |       |       VP
+|       |       |       |       V (raise)
+|       |       |       |       NP
+|       |       |       |       |       DET (the)
+|       |       |       |       |       N (money)
+
+
+Jack walked to the shore:
+S
+|       NP
+|       |       NAME (Jack)
+|       VP
+|       |       V (walked)
+|       |       NP
+|       |       |       TO (to)
+|       |       |       DET (the)
+|       |       |       N (shore)
+
+

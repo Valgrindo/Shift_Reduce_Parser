@@ -21,7 +21,7 @@ class Symbol:
         self.components = []
 
     def __str__(self):
-        return self._name  #+ ('' if self.value is None else f' ({self.value})')
+        return self._name
 
     def __copy__(self):
         cpy = Symbol(self._name)
@@ -42,8 +42,10 @@ class Symbol:
 
 
 class Grammar:
+    """
+    An abstraction representing a CFG grammar.
+    """
 
-    TERMINAL_LABEL = '@'
     RULE_END = Symbol('EOF')
     ROOT_SYM = Symbol('ROOT')
 
@@ -81,7 +83,7 @@ class Grammar:
         for from_s, rules in self._rules.items():
             for rule in rules:
                 if rule == pattern:
-                    return from_s.__copy__()
+                    return from_s.__copy__()  # Important to create a copy to prevent words 'bleeding' into each other
 
         return None
 
