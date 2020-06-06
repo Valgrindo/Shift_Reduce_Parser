@@ -45,13 +45,14 @@ class Grammar:
 
     TERMINAL_LABEL = '@'
     RULE_END = Symbol('EOF')
+    ROOT_SYM = Symbol('ROOT')
 
     def __init__(self, source_file, start_symbol="S"):
         with open(source_file, 'r') as grammar_fp:
             self.__data = json.load(grammar_fp)
         self.start_symbol = Symbol(start_symbol)
 
-        self._rules = {}
+        self._rules = {Grammar.ROOT_SYM: [[self.start_symbol]]}  # Needed for parsing
 
         # Create a sophisticated representation of the grammar.
         for k, v in self.__data.items():
@@ -87,5 +88,30 @@ class Grammar:
     def __str__(self):
         # TODO: If I have time make this fancy.
         return "Grammar"
+
+
+class Reduction:
+    """
+    A mapping of Symbol -> Symbol reductions to adapt sophisticated POS Taggers to simple grammars.
+    """
+
+    def __init__(self, reduction_file: str):
+        with open(reduction_file, 'r') as fp:
+            self.__raw_data = json.load(fp)
+
+        # In order to be useful, we transform the dictionary
+        self.data = {}
+        for k, vs in self.__raw_data.items():
+            for v in vs:
+                if v not in self.data:
+                    self.data[Symbol(v)] = Symbol(k)
+
+    def __getitem__(self, item: Symbol):
+        """
+        Given a Symbol, find a symbol to which it reduces.
+        :param item: The symbol to reduce.
+        :return:
+        """
+        return self.data[item].__copy__()
 
 
